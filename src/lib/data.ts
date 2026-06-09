@@ -191,6 +191,16 @@ export const skills: Skill[] = [
     { name: "AWS", category: "MLOps", level: 80 },
     { name: "MLflow", category: "MLOps", level: 75 },
     { name: "Kubernetes", category: "MLOps", level: 70 },
+
+    // AI Chatbots & Agents
+    { name: "Conversational AI", category: "AI Chatbots & Agents", level: 90 },
+    { name: "Chatbot Development", category: "AI Chatbots & Agents", level: 90 },
+    { name: "Dialogue Systems", category: "AI Chatbots & Agents", level: 85 },
+    { name: "Prompt Engineering", category: "AI Chatbots & Agents", level: 85 },
+    { name: "RAG", category: "AI Chatbots & Agents", level: 85 },
+    { name: "LLM Integration", category: "AI Chatbots & Agents", level: 85 },
+    { name: "Multi-Agent Systems", category: "AI Chatbots & Agents", level: 80 },
+    { name: "Agent Orchestration", category: "AI Chatbots & Agents", level: 80 },
 ]
 
 export const experiences: Experience[] = [
