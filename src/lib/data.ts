@@ -211,16 +211,16 @@ export const experiences: Experience[] = [
         description: "Working on AI and automation solutions for energy utilities, including customer support chatbots and anomaly detection systems for meter readings.",
     },
     {
-        title: "NLP Engineer",
-        company: "Elevvo – Egypt",
-        period: "2024 - 2026",
-        description: "Designed and implemented NLP pipelines and intelligent assistants for customer-facing applications, with a focus on text classification, intent extraction, and language understanding.",
-    },
-    {
         title: "AI Engineer",
         company: "SKR Engineering Solution – Australia",
-        period: "2022 - 2024",
+        period: "2026/01 - Current",
         description: "Built AI-driven systems for automation, data processing, and decision support, including multi-agent workflows and integration solutions.",
+    },
+    {
+        title: "NLP Engineer",
+        company: "Elevvo – Egypt",
+        period: "2025/09 - 2026/01",
+        description: "Designed and implemented NLP pipelines and intelligent assistants for customer-facing applications, with a focus on text classification, intent extraction, and language understanding.",
     },
 ]
 
