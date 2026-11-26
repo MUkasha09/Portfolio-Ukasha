@@ -19,9 +19,9 @@ const About = () => {
                                 src="/profile.png"
                                 alt="Portrait of Muhammad Ukasha"
                                 width={702}
-                                height={761}
+                                height={684}
                                 loading="lazy"
-                                className="w-full aspect-[702/761] object-cover grayscale contrast-125 border border-border"
+                                className="w-full aspect-[702/684] object-contain object-bottom grayscale contrast-125 border-b border-border"
                             />
                             <span className="absolute -bottom-3 -right-3 w-full h-full border border-white/30 -z-10" aria-hidden />
                         </div>
