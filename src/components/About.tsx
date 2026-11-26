@@ -16,12 +16,12 @@ const About = () => {
                     <Reveal className="md:col-span-4">
                         <div className="relative max-w-xs">
                             <img
-                                src="/profile.png"
+                                src="/profile.webp"
                                 alt="Portrait of Muhammad Ukasha"
-                                width={702}
-                                height={684}
+                                width={800}
+                                height={922}
                                 loading="lazy"
-                                className="w-full aspect-[702/684] object-contain object-bottom grayscale contrast-125 border-b border-border"
+                                className="w-full aspect-[800/922] object-contain object-bottom grayscale hover:grayscale-0 transition-[filter] duration-500 border-b border-border"
                             />
                             <span className="absolute -bottom-3 -right-3 w-full h-full border border-white/30 -z-10" aria-hidden />
                         </div>
