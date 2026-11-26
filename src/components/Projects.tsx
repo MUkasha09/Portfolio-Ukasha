@@ -1,73 +1,94 @@
 import { useState } from 'react'
+import { ArrowUpRight, Github } from 'lucide-react'
 import { projects, categories } from '@/lib/data'
-import ProjectCard from './ProjectCard'
-import { Button } from './ui/button'
-import { useScrollAnimation } from '@/hooks/useScrollAnimation'
+import { cn } from '@/lib/utils'
+import SectionHeader from './SectionHeader'
+import Reveal from './Reveal'
 
 const Projects = () => {
-    const [selectedCategory, setSelectedCategory] = useState('All')
-    const { ref, isVisible } = useScrollAnimation()
+    const [selected, setSelected] = useState('All')
 
-    const filteredProjects = selectedCategory === 'All'
-        ? projects
-        : projects.filter((project) => project.category === selectedCategory)
+    // Featured first, original order otherwise.
+    const ordered = [...projects].sort((a, b) => Number(b.featured) - Number(a.featured))
+    const visible = selected === 'All' ? ordered : ordered.filter((p) => p.category === selected)
 
     return (
-        <section id="projects" className="section-padding bg-background/50">
-            <div className="max-w-7xl mx-auto">
-                <div
-                    ref={ref}
-                    className={`text-center mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                        }`}
-                >
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                        Featured <span className="text-gradient">Projects</span>
-                    </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        A collection of my recent work showcasing various technologies and design approaches
-                    </p>
+        <section id="projects" className="section-padding border-t border-border">
+            <div className="container-x">
+                <SectionHeader
+                    index="01"
+                    label="Work"
+                    title="Selected projects"
+                    intro="Systems built for utilities, finance and business operations — conversational AI, automation and computer vision."
+                />
+
+                <div className="flex flex-wrap gap-2 mb-10" role="tablist" aria-label="Filter projects by category">
+                    {categories.map((category) => {
+                        const count = category === 'All' ? projects.length : projects.filter((p) => p.category === category).length
+                        const active = selected === category
+                        return (
+                            <button
+                                key={category}
+                                role="tab"
+                                aria-selected={active}
+                                onClick={() => setSelected(category)}
+                                className={cn(
+                                    'font-mono text-xs uppercase tracking-wider px-3 py-2 border transition-colors',
+                                    active ? 'bg-white text-black border-white' : 'border-border text-white/70 hover:border-white hover:text-white'
+                                )}
+                            >
+                                {category} <span className={active ? 'text-black/50' : 'text-muted-foreground'}>{count}</span>
+                            </button>
+                        )
+                    })}
                 </div>
 
-                {/* Category Filter */}
-                <div
-                    className={`flex flex-wrap items-center justify-center gap-3 mb-12 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                        }`}
-                >
-                    {categories.map((category) => (
-                        <Button
-                            key={category}
-                            variant={selectedCategory === category ? 'default' : 'outline'}
-                            onClick={() => setSelectedCategory(category)}
-                            className="transition-all duration-300"
-                        >
-                            {category}
-                        </Button>
+                <div className="grid md:grid-cols-2 border-l border-t border-border">
+                    {visible.map((project, i) => (
+                        <Reveal key={project.id} delay={(i % 2) * 80} className="border-r border-b border-border">
+                            <article className="group h-full p-6 md:p-8 flex flex-col transition-colors duration-300 hover:bg-white hover:text-black">
+                                <div className="flex items-center justify-between mb-10">
+                                    <span className="font-mono text-xs text-muted-foreground group-hover:text-black/60">
+                                        {String(i + 1).padStart(2, '0')} / {project.category}
+                                    </span>
+                                    {project.featured && (
+                                        <span className="font-mono text-[10px] uppercase tracking-widest border border-current px-2 py-0.5">
+                                            Featured
+                                        </span>
+                                    )}
+                                </div>
+
+                                <h3 className="text-2xl font-bold tracking-tight leading-tight mb-3">{project.title}</h3>
+                                <p className="text-muted-foreground group-hover:text-black/70 leading-relaxed mb-8">
+                                    {project.description}
+                                </p>
+
+                                <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2">
+                                    {project.tags.map((tag) => (
+                                        <span key={tag} className="font-mono text-[11px] uppercase tracking-wider text-white/60 group-hover:text-black/60">
+                                            #{tag.replace(/\s+/g, '')}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                {(project.github || project.demo) && (
+                                    <div className="flex gap-5 mt-6 pt-5 border-t border-border group-hover:border-black/20 text-sm font-medium">
+                                        {project.github && (
+                                            <a href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:underline underline-offset-4">
+                                                <Github className="w-4 h-4" /> Code
+                                            </a>
+                                        )}
+                                        {project.demo && (
+                                            <a href={project.demo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:underline underline-offset-4">
+                                                Live demo <ArrowUpRight className="w-4 h-4" />
+                                            </a>
+                                        )}
+                                    </div>
+                                )}
+                            </article>
+                        </Reveal>
                     ))}
                 </div>
-
-                {/* Projects Grid */}
-                <div
-                    className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                        }`}
-                >
-                    {filteredProjects.map((project, index) => (
-                        <div
-                            key={project.id}
-                            className="animate-fade-in-up"
-                            style={{ animationDelay: `${index * 100}ms` }}
-                        >
-                            <ProjectCard project={project} />
-                        </div>
-                    ))}
-                </div>
-
-                {filteredProjects.length === 0 && (
-                    <div className="text-center py-12">
-                        <p className="text-muted-foreground text-lg">
-                            No projects found in this category.
-                        </p>
-                    </div>
-                )}
             </div>
         </section>
     )

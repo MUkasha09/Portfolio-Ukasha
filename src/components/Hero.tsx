@@ -1,136 +1,76 @@
-import { useEffect, useState } from 'react'
-import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react'
-import { Button } from './ui/button'
+import { ArrowDownRight, ArrowUpRight } from 'lucide-react'
 import { socialLinks } from '@/lib/data'
+import SocialIcon from './SocialIcon'
 
-const Hero = () => {
-    const [displayText, setDisplayText] = useState('')
-    const fullText = "Machine Learning Engineer"
+const facts = [
+    { label: 'Now', value: 'Computer Engineer @ MEPCO' },
+    { label: 'Focus', value: 'LLM agents · RAG · Computer vision' },
+    { label: 'Based', value: 'Multan, Pakistan' },
+]
 
-    useEffect(() => {
-        let index = 0
-        const timer = setInterval(() => {
-            if (index <= fullText.length) {
-                setDisplayText(fullText.slice(0, index))
-                index++
-            } else {
-                clearInterval(timer)
-            }
-        }, 50)
+const Hero = () => (
+    <section id="home" className="relative min-h-screen flex flex-col justify-center pt-24 pb-12">
+        <div className="absolute inset-0 grid-bg pointer-events-none" aria-hidden />
 
-        return () => clearInterval(timer)
-    }, [])
+        <div className="container-x relative">
+            <p className="label mb-8 animate-fade-in">
+                <span className="inline-block w-2 h-2 bg-white mr-3 align-middle" />
+                Selected work · 2025 — 2026
+            </p>
 
-    const scrollToProjects = () => {
-        const element = document.querySelector('#projects')
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
-        }
-    }
+            <h1 className="font-black tracking-tighter leading-[0.9] text-[clamp(3.25rem,12vw,9.5rem)] animate-fade-in-up">
+                Muhammad
+                <br />
+                <span className="text-white/35">Ukasha</span>
+            </h1>
 
-    const getIcon = (iconName: string) => {
-        switch (iconName) {
-            case 'github':
-                return <Github className="w-5 h-5" />
-            case 'linkedin':
-                return <Linkedin className="w-5 h-5" />
-            case 'mail':
-                return <Mail className="w-5 h-5" />
-            default:
-                return null
-        }
-    }
+            <div className="mt-10 grid md:grid-cols-12 gap-8 items-end animate-fade-in-up" style={{ animationDelay: '150ms', animationFillMode: 'both' }}>
+                <p className="md:col-span-7 text-xl md:text-2xl font-light leading-snug text-white/80">
+                    <span className="text-white font-medium">AI Engineer.</span> I build LLM agents, RAG assistants,
+                    workflow automation and computer-vision models for real operations — not demos.
+                </p>
 
-    return (
-        <section
-            id="home"
-            className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16"
-        >
-            {/* Floating elements */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
-            </div>
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="text-center space-y-8 animate-fade-in-up">
-                    {/* Greeting */}
-                    <div className="space-y-2">
-                        <p className="text-lg md:text-xl text-muted-foreground">
-                            Hi, I'm
-                        </p>
-                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold">
-                            <span className="text-gradient">Muhammad Ukasha</span>
-                        </h1>
-                    </div>
-
-                    {/* Typing animation */}
-                    <div className="h-12 md:h-16">
-                        <h2 className="text-2xl md:text-4xl font-semibold text-foreground/90">
-                            {displayText}
-                            <span className="animate-pulse">|</span>
-                        </h2>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-                        I build intelligent systems that learn from data and solve real-world problems.
-                        Passionate about AI, deep learning, and creating impactful ML solutions.
-                    </p>
-
-                    {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                        <Button
-                            size="lg"
-                            onClick={scrollToProjects}
-                            className="text-lg px-8"
-                        >
-                            View My Work
-                        </Button>
-                        <Button
-                            size="lg"
-                            variant="outline"
-                            onClick={() => {
-                                const element = document.querySelector('#contact')
-                                if (element) element.scrollIntoView({ behavior: 'smooth' })
-                            }}
-                            className="text-lg px-8"
-                        >
-                            Contact Me
-                        </Button>
-                    </div>
-
-                    {/* Social Links */}
-                    <div className="flex items-center justify-center gap-4 pt-8">
-                        {socialLinks.map((link) => (
-                            <a
-                                key={link.name}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="p-3 rounded-full glass hover:glass-strong transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/30"
-                                aria-label={link.name}
-                            >
-                                {getIcon(link.icon)}
-                            </a>
-                        ))}
-                    </div>
-
-                    {/* Scroll indicator */}
-                    <div className="pt-12 animate-bounce">
-                        <button
-                            onClick={scrollToProjects}
-                            className="mx-auto flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-                            aria-label="Scroll down"
-                        >
-                            <span className="text-sm">Scroll Down</span>
-                            <ArrowDown className="w-6 h-6" />
-                        </button>
-                    </div>
+                <div className="md:col-span-5 flex flex-wrap gap-3 md:justify-end">
+                    <a
+                        href="#projects"
+                        className="inline-flex items-center gap-2 bg-white text-black border border-white px-6 h-12 font-medium hover:bg-black hover:text-white transition-colors"
+                    >
+                        See the work <ArrowDownRight className="w-4 h-4" />
+                    </a>
+                    <a
+                        href="#contact"
+                        className="inline-flex items-center gap-2 border border-white/30 px-6 h-12 font-medium hover:border-white hover:bg-white hover:text-black transition-colors"
+                    >
+                        Contact <ArrowUpRight className="w-4 h-4" />
+                    </a>
                 </div>
             </div>
-        </section>
-    )
-}
+
+            <div className="mt-20 grid sm:grid-cols-3 border-t border-border">
+                {facts.map((f) => (
+                    <div key={f.label} className="py-5 sm:pr-6 border-b sm:border-b-0 border-border">
+                        <p className="label mb-2">{f.label}</p>
+                        <p className="text-sm md:text-base">{f.value}</p>
+                    </div>
+                ))}
+            </div>
+
+            <div className="mt-8 flex items-center gap-2">
+                {socialLinks.map((link) => (
+                    <a
+                        key={link.name}
+                        href={link.url}
+                        target={link.url.startsWith('mailto:') ? undefined : '_blank'}
+                        rel="noopener noreferrer"
+                        aria-label={link.name}
+                        className="p-3 border border-border hover:bg-white hover:text-black hover:border-white transition-colors"
+                    >
+                        <SocialIcon icon={link.icon} className="w-4 h-4" />
+                    </a>
+                ))}
+            </div>
+        </div>
+    </section>
+)
 
 export default Hero

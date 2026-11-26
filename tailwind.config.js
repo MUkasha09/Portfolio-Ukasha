@@ -95,6 +95,10 @@ export default {
                 float: "float 3s ease-in-out infinite",
                 gradient: "gradient 8s ease infinite",
             },
+            fontFamily: {
+                sans: ["Roboto", "system-ui", "sans-serif"],
+                mono: ["Roboto Mono", "ui-monospace", "monospace"],
+            },
             backgroundSize: {
                 "300%": "300%",
             },

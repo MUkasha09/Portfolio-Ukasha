@@ -1,218 +1,99 @@
-import { useState, FormEvent } from 'react'
-import { Button } from './ui/button'
+import { useState, FormEvent, ChangeEvent } from 'react'
+import { ArrowUpRight, Send } from 'lucide-react'
+import { socialLinks } from '@/lib/data'
 import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
-import { useScrollAnimation } from '@/hooks/useScrollAnimation'
-import { Mail, MapPin, Phone, Send } from 'lucide-react'
+import SectionHeader from './SectionHeader'
+import Reveal from './Reveal'
+
+const EMAIL = '1718ukashae2@gmail.com'
 
 const Contact = () => {
-    const { ref, isVisible } = useScrollAnimation()
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-    })
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+    const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+        setForm({ ...form, [e.target.name]: e.target.value })
+
+    // No backend: open the visitor's mail app with the message pre-filled,
+    // instead of pretending a message was sent.
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
-        setIsSubmitting(true)
-
-        // Simulate form submission
-        setTimeout(() => {
-            setIsSubmitting(false)
-            setSubmitStatus('success')
-            setFormData({ name: '', email: '', subject: '', message: '' })
-
-            // Reset status after 3 seconds
-            setTimeout(() => setSubmitStatus('idle'), 3000)
-        }, 1500)
+        const body = `${form.message}\n\n— ${form.name} (${form.email})`
+        window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(form.subject)}&body=${encodeURIComponent(body)}`
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        })
-    }
+    const channels = [
+        { label: 'Email', value: EMAIL, href: `mailto:${EMAIL}` },
+        { label: 'Phone', value: '+92 306 0255284', href: 'tel:+923060255284' },
+        ...socialLinks
+            .filter((l) => l.icon !== 'mail')
+            .map((l) => ({ label: l.name, value: l.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''), href: l.url })),
+    ]
 
     return (
-        <section id="contact" className="section-padding bg-background/50">
-            <div className="max-w-7xl mx-auto">
-                <div
-                    ref={ref}
-                    className={`text-center mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                        }`}
-                >
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                        Get In <span className="text-gradient">Touch</span>
-                    </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        Have a project in mind or just want to chat? Feel free to reach out!
-                    </p>
-                </div>
+        <section id="contact" className="section-padding border-t border-border">
+            <div className="container-x">
+                <SectionHeader
+                    index="03"
+                    label="Contact"
+                    title="Let's build something."
+                    intro="Hiring, a project, or a question about one of these systems — email is fastest."
+                />
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Contact Info */}
-                    <div
-                        className={`space-y-6 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-                            }`}
-                    >
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Mail className="w-5 h-5 text-primary" />
-                                    Email
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <CardDescription>
-                                    <a href="mailto:1718ukashae2@gmail.com" className="hover:text-primary transition-colors">
-                                        1718ukashae2@gmail.com
-                                    </a>
-                                </CardDescription>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Phone className="w-5 h-5 text-primary" />
-                                    Phone
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <CardDescription>
-                                    <a href="tel:+923060255284" className="hover:text-primary transition-colors">
-                                        +92 306 0255284
-                                    </a>
-                                </CardDescription>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <MapPin className="w-5 h-5 text-primary" />
-                                    Location
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <CardDescription>Pakistan</CardDescription>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                    {/* Contact Form */}
-                    <div
-                        className={`lg:col-span-2 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
-                            }`}
-                    >
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Send Me a Message</CardTitle>
-                                <CardDescription>
-                                    Fill out the form below and I'll get back to you as soon as possible
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <form onSubmit={handleSubmit} className="space-y-6">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label htmlFor="name" className="text-sm font-medium">
-                                                Name *
-                                            </label>
-                                            <Input
-                                                id="name"
-                                                name="name"
-                                                placeholder="Your name"
-                                                value={formData.name}
-                                                onChange={handleChange}
-                                                required
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label htmlFor="email" className="text-sm font-medium">
-                                                Email *
-                                            </label>
-                                            <Input
-                                                id="email"
-                                                name="email"
-                                                type="email"
-                                                placeholder="your.email@example.com"
-                                                value={formData.email}
-                                                onChange={handleChange}
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label htmlFor="subject" className="text-sm font-medium">
-                                            Subject *
-                                        </label>
-                                        <Input
-                                            id="subject"
-                                            name="subject"
-                                            placeholder="What's this about?"
-                                            value={formData.subject}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label htmlFor="message" className="text-sm font-medium">
-                                            Message *
-                                        </label>
-                                        <Textarea
-                                            id="message"
-                                            name="message"
-                                            placeholder="Your message..."
-                                            value={formData.message}
-                                            onChange={handleChange}
-                                            required
-                                            rows={6}
-                                        />
-                                    </div>
-
-                                    {submitStatus === 'success' && (
-                                        <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 text-primary">
-                                            Message sent successfully! I'll get back to you soon.
-                                        </div>
-                                    )}
-
-                                    {submitStatus === 'error' && (
-                                        <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive">
-                                            Something went wrong. Please try again.
-                                        </div>
-                                    )}
-
-                                    <Button
-                                        type="submit"
-                                        size="lg"
-                                        disabled={isSubmitting}
-                                        className="w-full md:w-auto"
+                <div className="grid lg:grid-cols-12 gap-14">
+                    <Reveal className="lg:col-span-5">
+                        <ul className="border-t border-border">
+                            {channels.map((c) => (
+                                <li key={c.label}>
+                                    <a
+                                        href={c.href}
+                                        target={c.href.startsWith('http') ? '_blank' : undefined}
+                                        rel="noopener noreferrer"
+                                        className="group flex items-center justify-between gap-4 py-5 border-b border-border hover:pl-3 transition-all"
                                     >
-                                        {isSubmitting ? (
-                                            <>
-                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                                                Sending...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Send className="w-4 h-4 mr-2" />
-                                                Send Message
-                                            </>
-                                        )}
-                                    </Button>
-                                </form>
-                            </CardContent>
-                        </Card>
-                    </div>
+                                        <span>
+                                            <span className="label block mb-1">{c.label}</span>
+                                            <span className="text-base md:text-lg break-all">{c.value}</span>
+                                        </span>
+                                        <ArrowUpRight className="w-5 h-5 shrink-0 text-muted-foreground group-hover:text-white group-hover:rotate-45 transition-all" />
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="label mt-6">Multan, Pakistan · PKT (UTC+5)</p>
+                    </Reveal>
+
+                    <Reveal className="lg:col-span-7" delay={100}>
+                        <form onSubmit={handleSubmit} className="space-y-8">
+                            <div className="grid md:grid-cols-2 gap-8">
+                                <label className="block">
+                                    <span className="label">Name</span>
+                                    <Input name="name" placeholder="Your name" value={form.name} onChange={handleChange} required className="text-base" />
+                                </label>
+                                <label className="block">
+                                    <span className="label">Email</span>
+                                    <Input name="email" type="email" placeholder="you@company.com" value={form.email} onChange={handleChange} required className="text-base" />
+                                </label>
+                            </div>
+                            <label className="block">
+                                <span className="label">Subject</span>
+                                <Input name="subject" placeholder="What's this about?" value={form.subject} onChange={handleChange} required className="text-base" />
+                            </label>
+                            <label className="block">
+                                <span className="label">Message</span>
+                                <Textarea name="message" placeholder="Tell me about it…" value={form.message} onChange={handleChange} required rows={5} className="text-base resize-none" />
+                            </label>
+                            <div className="flex flex-wrap items-center gap-5">
+                                <button
+                                    type="submit"
+                                    className="inline-flex items-center gap-2 bg-white text-black border border-white px-8 h-12 font-medium hover:bg-black hover:text-white transition-colors"
+                                >
+                                    <Send className="w-4 h-4" /> Send message
+                                </button>
+                                <span className="text-sm text-muted-foreground">Opens your email app with this message filled in.</span>
+                            </div>
+                        </form>
+                    </Reveal>
                 </div>
             </div>
         </section>
